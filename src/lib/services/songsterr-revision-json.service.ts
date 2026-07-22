@@ -89,9 +89,7 @@ export class SongsterrRevisionJsonService {
         });
 
         try {
-          const response = await this.fetcher.fetch(revisionUrl, {
-            headers: this.fetcher.browserLikeHeaders
-          });
+          const response = await this.fetcher.fetch(revisionUrl);
 
           if (!response.ok) {
             warnings.push({
@@ -135,7 +133,7 @@ export class SongsterrRevisionJsonService {
     return this.fetchAllPartRevisions(stateMeta, this.CDN_BASE_URL_2);
   }
 
-  private readonly fetcher = new Fetcher({ withBrowserLikeHeaders: true });
+  private readonly fetcher = new Fetcher();
   private readonly CDN_BASE_URL = 'https://dqsljvtekg760.cloudfront.net';
   private readonly CDN_BASE_URL_2 = 'https://d3d3l6a6rcgkaf.cloudfront.net';
 }
