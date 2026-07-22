@@ -8,11 +8,9 @@ This isn't published on the Chrome Web Store, so it needs to be installed manual
 
 ## Installing (no build tools required)
 
-1. Download a build:
-   - **[Latest release](../../releases/latest)** — the most recent stable, tagged version.
-   - **[Dev build](../../releases/tag/dev)** — automatically rebuilt from the latest commit on `main` after every push. May be unstable.
-2. Unzip the downloaded file into a new directory
-3. In Chrome, go to `chrome://extensions`
+1. Download the **[Latest release](../../releases/latest/download/songsterr-chrome-extension.zip)** (see [releases page](../../releases) for all releases).
+2. Unzip the downloaded file into a new folder
+3. In Chrome, go to `chrome://extensions` (paste this to the URL text field)
 4. Enable **Developer mode** (top right)
 5. Click **Load unpacked** and select the unzipped folder
 6. Pin the extension and open a Songsterr tab to try it out

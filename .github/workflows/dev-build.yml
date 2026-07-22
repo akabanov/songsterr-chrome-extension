@@ -24,7 +24,7 @@ jobs:
       - name: Zip extension
         run: |
           cd dist
-          zip -r ../songsterr-downloader-dev.zip .
+          zip -r ../songsterr-chrome-extension-dev.zip .
 
       - name: Move dev tag to latest commit
         run: |
@@ -40,4 +40,4 @@ jobs:
           body: |
             Automatically rebuilt from the latest commit on `main` (${{ github.sha }}).
             This is the bleeding-edge build — it may be unstable. For a stable version, see the [latest release](../../releases/latest).
-          files: songsterr-downloader-dev.zip
+          files: songsterr-chrome-extension-dev.zip

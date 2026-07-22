@@ -23,10 +23,14 @@ jobs:
       - name: Zip extension
         run: |
           cd dist
-          zip -r "../songsterr-downloader-${{ github.ref_name }}.zip" .
+          zip -r "../songsterr-chrome-extension-${{ github.ref_name }}.zip" .
+          # stable filename so /releases/latest/download/... always points at the current release
+          cp "../songsterr-chrome-extension-${{ github.ref_name }}.zip" ../songsterr-chrome-extension.zip
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          files: songsterr-downloader-${{ github.ref_name }}.zip
+          files: |
+            songsterr-chrome-extension-${{ github.ref_name }}.zip
+            songsterr-chrome-extension.zip
           generate_release_notes: true
