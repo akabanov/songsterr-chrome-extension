@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Songsterr Downloader",
+  "description": "Convert any Songsterr tab into a Guitar Pro, MIDI, or AlphaTex file.",
+  "version": "1.0.0",
+  "action": {
+    "default_popup": "src/popup/index.html"
+  },
+  "icons": {
+    "16": "src/icons/icon16.png",
+    "48": "src/icons/icon48.png",
+    "128": "src/icons/icon128.png"
+  },
+  "permissions": ["activeTab", "downloads"],
+  "host_permissions": [
+    "https://www.songsterr.com/*",
+    "https://dqsljvtekg760.cloudfront.net/*",
+    "https://d3d3l6a6rcgkaf.cloudfront.net/*"
+  ]
+}

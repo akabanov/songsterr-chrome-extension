@@ -1,0 +1,36 @@
+{
+  "name": "songsterr-downloader-extension",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "vite build --watch --mode development",
+    "build": "vite build",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
+    "test:unit": "vitest",
+    "lint": "prettier --plugin-search-dir . --check .",
+    "format": "prettier --plugin-search-dir . --write ."
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.7.1",
+    "@fontsource-variable/nunito": "^5.0.0",
+    "@tailwindcss/vite": "^4.2.1",
+    "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "@types/chrome": "^0.0.287",
+    "@zerodevx/svelte-toast": "^0.9.5",
+    "daisyui": "^5.5.19",
+    "prettier": "^3.1.0",
+    "prettier-plugin-svelte": "^3.2.6",
+    "svelte": "^5.51.0",
+    "svelte-check": "^4.0.0",
+    "tailwindcss": "^4.2.1",
+    "typescript": "^5.5.0",
+    "vite": "^5.4.4",
+    "vitest": "3.2.6"
+  },
+  "type": "module",
+  "dependencies": {
+    "@coderline/alphatab": "^1.8.1",
+    "@xmldom/xmldom": "^0.8.10"
+  }
+}
