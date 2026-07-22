@@ -108,10 +108,12 @@
   </div>
   <div class="my-2"></div>
 
-  <button
-    class="cursor-pointer text-slate-400 font-light underline hover:text-slate-500 bg-transparent mb-1"
-    onclick={deselectSong}>Select another</button
-  >
+  {#if !formState.isOnSongsterrPage}
+    <button
+      class="cursor-pointer text-slate-400 font-light underline hover:text-slate-500 bg-transparent mb-1"
+      onclick={deselectSong}>Select another</button
+    >
+  {/if}
 </div>
 
 <style>

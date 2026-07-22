@@ -37,12 +37,16 @@
     }
   }
 
-  async function fetchMetadata(byLinkUrl: string): Promise<void> {
+  async function fetchMetadata(
+    byLinkUrl: string,
+    isOnSongsterrPage: boolean
+  ): Promise<void> {
     formState.isLoadingMetadata = true;
     try {
       const songMetadata =
         await songsterrService.getMetadataFromTabUrl(byLinkUrl);
       formState.selectedSong = { ...songMetadata, byLinkUrl };
+      formState.isOnSongsterrPage = isOnSongsterrPage;
     } catch (error) {
       console.error('#fetchMetadata failed', error);
       toastError('Error finding song data from URL 😭');
@@ -54,7 +58,7 @@
   function handleSubmit(event: SubmitEvent): void {
     event.preventDefault();
     if (!isValid || !url) return;
-    fetchMetadata(url);
+    fetchMetadata(url, false);
   }
 
   onMount(() => {
@@ -62,7 +66,7 @@
       if (!activeUrl || formState.selectedSong) return;
       url = activeUrl;
       isValid = true;
-      fetchMetadata(activeUrl);
+      fetchMetadata(activeUrl, true);
     });
   });
 </script>
@@ -76,7 +80,7 @@
     for="songsterr-url"
     class="self-start text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
   >
-    Songsterr tab URL:</label
+    Songsterr TAB URL:</label
   >
   <input
     id="songsterr-url"

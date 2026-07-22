@@ -19,9 +19,11 @@
     <p>Song - {selectedSong.title}</p>
     <p class="font-light">Artist - {selectedSong.artist}</p>
   </div>
-  <!-- svelte-ignore a11y_click_events_have_key_events -->
-  <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-  <p class="cursor-pointer" onclick={deselectSong}>
-    <TimesIcon class="h-5 w-5" />
-  </p>
+  {#if !formState.isOnSongsterrPage}
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+    <p class="cursor-pointer" onclick={deselectSong}>
+      <TimesIcon class="h-5 w-5" />
+    </p>
+  {/if}
 </div>
