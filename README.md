@@ -1,31 +1,29 @@
 # Songsterr Downloader (Chrome Extension)
 
-A Chrome extension that converts Songsterr tabs to Guitar Pro (.gp7), MIDI, or AlphaTex files — right from your browser, no server required.
+A Chrome extension that downloads Songsterr tabs as Guitar Pro (.gp7), MIDI, or AlphaTex files.
 
 Based on [songsterr-downloader](https://github.com/Metaphysics0/songsterr-downloader), the original web app version. See how that was built [here!](https://www.youtube.com/watch?v=SsIMY8xmDNY)
 
-## How it works
+This isn't published on the Chrome Web Store, so it needs to be installed manually as an "unpacked" extension. The steps below are the same either way — the only difference is where the `dist/` folder comes from.
 
-1. Open a Songsterr tab page, then click the extension icon
-2. The popup auto-fills the URL from the active tab (or paste one manually)
-3. It fetches per-track revision JSON directly from Songsterr's CDN (cross-origin fetch works from the extension without a server, thanks to `host_permissions`)
-4. Converts all tracks into an alphaTab score model
-5. Exports as GP7, MIDI, or AlphaTex and saves it via `chrome.downloads`
+## Installing (no build tools required)
 
-## Conversion features
+1. Download a build:
+   - **[Latest release](../../releases/latest)** — the most recent stable, tagged version.
+   - **[Dev build](../../releases/tag/dev)** — automatically rebuilt from the latest commit on `main` after every push. May be unstable.
+2. Unzip the downloaded file into a new directory
+3. In Chrome, go to `chrome://extensions`
+4. Enable **Developer mode** (top right)
+5. Click **Load unpacked** and select the unzipped folder
+6. Pin the extension and open a Songsterr tab to try it out
 
-See [CONVERTER.md](src/lib/services/converter/CONVERTER.md) for full details.
-
-## Deploying locally
+## Building from source
 
 1. Clone the repo
 2. Install [bun](https://bun.sh/)
 3. `bun install`
 4. `bun run build` — outputs the unpacked extension to `dist/`
-5. In Chrome, go to `chrome://extensions`
-6. Enable **Developer mode** (top right)
-7. Click **Load unpacked** and select the `dist/` folder
-8. Pin the extension and open a Songsterr tab to try it out
+5. Load `dist/` as described above
 
 While iterating, run `bun run dev` (a watching build) and click the reload icon on the extension's card in `chrome://extensions` after each rebuild.
 
