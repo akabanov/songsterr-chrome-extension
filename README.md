@@ -19,7 +19,7 @@ This can't be published on the Chrome Web Store for obvious reasons, so it needs
 5. Click **Load unpacked** and select the unzipped folder
 6. Pin the extension and open a Songsterr tab to try it out
 
-**Note:** Crome doesn't make a copy of the extension files.
+**Note:** Chrome doesn't make a copy of the extension files.
 As soon as you delete the extension directory the extension becomes unusable.
 
 ## Building from source
