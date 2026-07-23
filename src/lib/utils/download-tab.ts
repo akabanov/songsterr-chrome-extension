@@ -40,13 +40,15 @@ export async function downloadMidi(
 }
 
 export async function downloadAlphaTex(
-  song: SongsterrPartialMetadata
+  song: SongsterrPartialMetadata,
+  options: { trackPartId?: number } = {}
 ): Promise<void> {
   try {
     if (!song.byLinkUrl) throw new Error('Missing byLinkUrl');
     const result = await tabExportService.exportAlphaTex(
       song.byLinkUrl,
-      song.title
+      song.title,
+      { trackPartId: options.trackPartId }
     );
     await triggerFileDownload(result);
   } catch (error) {

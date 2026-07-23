@@ -2,6 +2,8 @@ export interface MidiDownloadOptions {
   separateTracks: boolean;
 }
 
+export type DownloadFormat = 'guitarpro' | 'midi' | 'alphatex';
+
 export interface SongsterrPartialMetadata {
   title: string;
   songId: number;

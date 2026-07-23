@@ -1,4 +1,5 @@
 import { logger } from '$lib/logger';
+import type { SongsterrStateMetaCurrentTrack } from '$lib/types';
 import { SongsterrService } from './songsterr.service';
 import { SongsterrRevisionJsonService } from './songsterr-revision-json.service';
 import { SongsterrToAlphaTabConverter } from './converter/songsterr-to-alphatab.converter';
@@ -55,23 +56,39 @@ export class TabExportService {
 
   async exportAlphaTex(
     byLinkUrl: string,
-    songTitle?: string
+    songTitle?: string,
+    options: { trackPartId?: number } = {}
   ): Promise<TabExportResult> {
     const { meta, revisions, warnings } = await this.fetchRevisions(byLinkUrl);
-    const { data, warnings: convertWarnings } = this.converter.toAlphaTex({
-      meta,
-      revisions
-    });
+    const { data, warnings: convertWarnings } = this.converter.toAlphaTex(
+      { meta, revisions },
+      { trackPartId: options.trackPartId }
+    );
     this.logWarnings(meta, [...warnings, ...convertWarnings], 'alphatex');
+
+    const selectedTrack = revisions.find(
+      (entry) => entry.trackMeta.partId === options.trackPartId
+    );
+    const baseTitle = songTitle || meta.title;
+    const fileNameSource = selectedTrack
+      ? `${baseTitle} - ${selectedTrack.trackMeta.title || selectedTrack.trackMeta.name || 'track'}`
+      : baseTitle;
 
     return {
       data,
-      fileName: this.buildFileName(
-        songTitle || meta.title,
-        `${meta.songId}.tex`
-      ),
+      fileName: this.buildFileName(fileNameSource, `${meta.songId}.tex`),
       contentType: 'text/plain'
     };
+  }
+
+  async getTrackList(
+    byLinkUrl: string
+  ): Promise<SongsterrStateMetaCurrentTrack[]> {
+    const meta =
+      await this.songsterrRevisionJsonService.getStateMetaFromTabUrl(
+        byLinkUrl
+      );
+    return [...meta.tracks].sort((left, right) => left.partId - right.partId);
   }
 
   private async fetchRevisions(byLinkUrl: string) {

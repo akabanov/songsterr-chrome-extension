@@ -217,8 +217,21 @@ export class SongsterrToAlphaTabConverter {
     return { data, warnings };
   }
 
-  toAlphaTex(input: SongsterrToGpInput): SongsterrToAlphaTabOutput {
-    const { score, settings, warnings } = this.buildScore(input);
+  toAlphaTex(
+    input: SongsterrToGpInput,
+    options: { trackPartId?: number } = {}
+  ): SongsterrToAlphaTabOutput {
+    const revisions =
+      typeof options.trackPartId === 'number'
+        ? input.revisions.filter(
+            (entry) => entry.trackMeta.partId === options.trackPartId
+          )
+        : input.revisions;
+
+    const { score, settings, warnings } = this.buildScore({
+      meta: input.meta,
+      revisions
+    });
     score.finish(settings);
 
     const exporter = new alphaTab.exporter.AlphaTexExporter();

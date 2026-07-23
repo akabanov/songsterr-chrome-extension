@@ -6,12 +6,14 @@
   } from '$lib/utils/download-tab';
   import SelectedSong from './SongPreview.svelte';
   import { formState } from '$lib/runes/form-state.svelte';
-  import type { SongsterrPartialMetadata } from '$lib/types';
-  import GuitarIcon from '$lib/icons/GuitarIcon.svelte';
-  import MidiIcon from '$lib/icons/MidiIcon.svelte';
-  import AlphaTexIcon from '$lib/icons/AlphaTexIcon.svelte';
+  import type {
+    DownloadFormat,
+    SongsterrPartialMetadata,
+    MidiDownloadOptions as MidiDownloadOptionsValue
+  } from '$lib/types';
+  import FormatSelector from './FormatSelector.svelte';
   import MidiDownloadOptions from './MidiDownloadOptions.svelte';
-  import type { MidiDownloadOptions as MidiDownloadOptionsValue } from '$lib/types';
+  import AlphaTexTrackSelector from './AlphaTexTrackSelector.svelte';
 
   interface Props {
     selectedSong: SongsterrPartialMetadata;
@@ -19,40 +21,35 @@
 
   let { selectedSong }: Props = $props();
 
-  let downloading: 'tab' | 'midi' | 'alphatex' | null = $state(null);
+  let format = $state<DownloadFormat>('guitarpro');
+  let downloading = $state(false);
   let midiDownloadOptions = $state<MidiDownloadOptionsValue>({
     separateTracks: false
   });
+  let selectedTrackPartId = $state<number | null>(null);
 
-  async function downloadTab(): Promise<void> {
-    if (downloading) return;
-    downloading = 'tab';
-    try {
-      await downloadGuitarPro(selectedSong);
-    } finally {
-      downloading = null;
-    }
-  }
+  $effect(() => {
+    selectedSong;
+    selectedTrackPartId = null;
+  });
 
-  async function downloadMidi(): Promise<void> {
+  async function download(): Promise<void> {
     if (downloading) return;
-    downloading = 'midi';
+    downloading = true;
     try {
-      await downloadMidiFile(selectedSong, {
-        separateTracks: midiDownloadOptions.separateTracks
-      });
+      if (format === 'guitarpro') {
+        await downloadGuitarPro(selectedSong);
+      } else if (format === 'midi') {
+        await downloadMidiFile(selectedSong, {
+          separateTracks: midiDownloadOptions.separateTracks
+        });
+      } else {
+        await downloadAlphaTex(selectedSong, {
+          trackPartId: selectedTrackPartId ?? undefined
+        });
+      }
     } finally {
-      downloading = null;
-    }
-  }
-
-  async function downloadTex(): Promise<void> {
-    if (downloading) return;
-    downloading = 'alphatex';
-    try {
-      await downloadAlphaTex(selectedSong);
-    } finally {
-      downloading = null;
+      downloading = false;
     }
   }
 
@@ -61,51 +58,41 @@
   }
 </script>
 
-<div class="flex flex-col items-center">
-  <div class="mb-8 w-full">
+<div class="flex flex-col items-center w-full">
+  <div class="mb-4 w-full">
     <SelectedSong {selectedSong} />
   </div>
-  <div class="flex flex-col gap-2 items-center">
-    <button
-      class="relative flex items-center px-4 py-1.5 text-sm font-semibold text-white bg-blue-500 border border-blue-600 rounded shadow hover:bg-blue-600 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
-      disabled={!!downloading}
-      onclick={downloadTab}
-    >
-      <GuitarIcon class="inline-block mr-1.5 text-base" />Download Guitar Pro
-      {#if downloading === 'tab'}
-        <span class="progress-bar"></span>
-      {/if}
-    </button>
-    <span class="mb-1 font-light">or </span>
-    <div class="flex items-stretch gap-1">
-      <button
-        class="cursor-pointer relative flex items-center px-4 py-1.5 text-sm text-slate-600 border border-slate-500 rounded hover:bg-slate-700 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
-        disabled={!!downloading}
-        onclick={downloadMidi}
-      >
-        <MidiIcon class="inline-block mr-1.5 text-base" />
-        Download MIDI
-        {#if downloading === 'midi'}
-          <span class="progress-bar"></span>
-        {/if}
-      </button>
+
+  <div class="mb-4 w-full">
+    <FormatSelector bind:format disabled={downloading} />
+  </div>
+
+  <div class="mb-4 flex w-full min-h-8 items-center justify-center">
+    {#if format === 'midi'}
       <MidiDownloadOptions
         bind:options={midiDownloadOptions}
-        disabled={!!downloading}
+        disabled={downloading}
       />
-    </div>
-    <button
-      class="cursor-pointer relative flex items-center px-4 py-1.5 text-sm text-slate-600 border border-slate-500 rounded hover:bg-slate-700 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
-      disabled={!!downloading}
-      onclick={downloadTex}
-    >
-      <AlphaTexIcon class="inline-block mr-1.5 text-base" />
-      Download AlphaTex
-      {#if downloading === 'alphatex'}
-        <span class="progress-bar"></span>
-      {/if}
-    </button>
+    {:else if format === 'alphatex'}
+      <AlphaTexTrackSelector
+        {selectedSong}
+        bind:selectedTrackPartId
+        disabled={downloading}
+      />
+    {/if}
   </div>
+
+  <button
+    class="relative flex items-center px-4 py-1.5 text-sm font-semibold text-white bg-blue-500 border border-blue-600 rounded shadow hover:bg-blue-600 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+    disabled={downloading}
+    onclick={download}
+  >
+    Download
+    {#if downloading}
+      <span class="progress-bar"></span>
+    {/if}
+  </button>
+
   <div class="my-2"></div>
 
   {#if !formState.isOnSongsterrPage}
