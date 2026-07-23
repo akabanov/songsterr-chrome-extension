@@ -280,7 +280,7 @@ export class SongsterrToAlphaTabConverter {
     const score = new alphaTab.model.Score();
     score.title = meta.title;
     score.artist = meta.artist;
-    score.tab = 'Songsterr Downloader';
+    score.tab = 'https://songsterr.com';
 
     const masterTrack = this.pickMasterTrack(revisions);
     const masterBarCount = Math.max(1, this.getMasterBarCount(revisions));

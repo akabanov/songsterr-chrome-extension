@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Songsterr Downloader",
+  "name": "Songsterr Tabs Downloader",
   "description": "Convert any Songsterr tab into a Guitar Pro, MIDI, or AlphaTex file.",
   "version": "1.0.0",
   "action": {
