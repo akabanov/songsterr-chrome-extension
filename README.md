@@ -3,9 +3,10 @@
 A Chrome extension that downloads Songsterr tabs as Guitar Pro, MIDI,
 or plain-text [AlphaTex](https://alphatab.net/) files.
 
-Based on [songsterr-downloader](https://github.com/Metaphysics0/songsterr-downloader), the original web app version. See how that was built [here!](https://www.youtube.com/watch?v=SsIMY8xmDNY)
+Based on a Songsterr tab files converter from the
+[original web application](https://github.com/Metaphysics0/songsterr-downloader) built by Ryan Roberts.
 
-Songsterr's Guitar Pro/MIDI export is a paid feature that funds the tabs you're downloading.
+Songsterr's Guitar Pro/MIDI export is a **paid feature** that funds the tabs you're downloading.
 If you can afford it, please consider a Songsterr subscription instead of using this extension.
 This extension is meant for folks who can't YET afford one, not as a permanent substitute for it.
 
