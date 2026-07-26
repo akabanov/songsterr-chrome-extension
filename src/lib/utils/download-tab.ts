@@ -7,11 +7,16 @@ import { ERROR_DOWNLOADING_TAB_TOAST_MESSAGE } from '$lib/constants/error-downlo
 const tabExportService = new TabExportService();
 
 export async function downloadGuitarPro(
-  song: SongsterrPartialMetadata
+  song: SongsterrPartialMetadata,
+  options: { trackPartId?: number } = {}
 ): Promise<void> {
   try {
     if (!song.byLinkUrl) throw new Error('Missing byLinkUrl');
-    const result = await tabExportService.exportGp7(song.byLinkUrl, song.title);
+    const result = await tabExportService.exportGp7(
+      song.byLinkUrl,
+      song.title,
+      { trackPartId: options.trackPartId }
+    );
     await triggerFileDownload(result);
   } catch (error) {
     console.error('error', error);

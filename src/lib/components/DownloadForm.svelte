@@ -13,7 +13,7 @@
   } from '$lib/types';
   import FormatSelector from './FormatSelector.svelte';
   import MidiDownloadOptions from './MidiDownloadOptions.svelte';
-  import AlphaTexTrackSelector from './AlphaTexTrackSelector.svelte';
+  import TrackSelector from './TrackSelector.svelte';
 
   interface Props {
     selectedSong: SongsterrPartialMetadata;
@@ -38,7 +38,9 @@
     downloading = true;
     try {
       if (format === 'guitarpro') {
-        await downloadGuitarPro(selectedSong);
+        await downloadGuitarPro(selectedSong, {
+          trackPartId: selectedTrackPartId ?? undefined
+        });
       } else if (format === 'midi') {
         await downloadMidiFile(selectedSong, {
           separateTracks: midiDownloadOptions.separateTracks
@@ -73,8 +75,8 @@
         bind:options={midiDownloadOptions}
         disabled={downloading}
       />
-    {:else if format === 'alphatex'}
-      <AlphaTexTrackSelector
+    {:else if format === 'guitarpro' || format === 'alphatex'}
+      <TrackSelector
         {selectedSong}
         bind:selectedTrackPartId
         disabled={downloading}

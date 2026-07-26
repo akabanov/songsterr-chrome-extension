@@ -13,21 +13,27 @@ export interface TabExportResult {
 export class TabExportService {
   async exportGp7(
     byLinkUrl: string,
-    songTitle?: string
+    songTitle?: string,
+    options: { trackPartId?: number } = {}
   ): Promise<TabExportResult> {
     const { meta, revisions, warnings } = await this.fetchRevisions(byLinkUrl);
-    const { data, warnings: convertWarnings } = this.converter.toGp7({
-      meta,
-      revisions
-    });
+    const { data, warnings: convertWarnings } = this.converter.toGp7(
+      { meta, revisions },
+      { trackPartId: options.trackPartId }
+    );
     this.logWarnings(meta, [...warnings, ...convertWarnings], 'gp');
+
+    const selectedTrack = revisions.find(
+      (entry) => entry.trackMeta.partId === options.trackPartId
+    );
+    const baseTitle = songTitle || meta.title;
+    const fileNameSource = selectedTrack
+      ? `${baseTitle} - ${selectedTrack.trackMeta.title || selectedTrack.trackMeta.name || 'track'}`
+      : baseTitle;
 
     return {
       data,
-      fileName: this.buildFileName(
-        songTitle || meta.title,
-        `${meta.songId}.gp`
-      ),
+      fileName: this.buildFileName(fileNameSource, `${meta.songId}.gp`),
       contentType: 'application/gp'
     };
   }

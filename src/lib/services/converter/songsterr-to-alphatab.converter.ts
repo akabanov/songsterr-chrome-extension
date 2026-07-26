@@ -207,8 +207,13 @@ function addTrackNamesToMidi(
 }
 
 export class SongsterrToAlphaTabConverter {
-  toGp7(input: SongsterrToGpInput): SongsterrToAlphaTabOutput {
-    const { score, settings, warnings } = this.buildScore(input);
+  toGp7(
+    input: SongsterrToGpInput,
+    options: { trackPartId?: number } = {}
+  ): SongsterrToAlphaTabOutput {
+    const { score, settings, warnings } = this.buildScore(
+      this.filterByTrackPartId(input, options.trackPartId)
+    );
     score.finish(settings);
 
     const exporter = new alphaTab.exporter.Gp7Exporter();
@@ -221,23 +226,29 @@ export class SongsterrToAlphaTabConverter {
     input: SongsterrToGpInput,
     options: { trackPartId?: number } = {}
   ): SongsterrToAlphaTabOutput {
-    const revisions =
-      typeof options.trackPartId === 'number'
-        ? input.revisions.filter(
-            (entry) => entry.trackMeta.partId === options.trackPartId
-          )
-        : input.revisions;
-
-    const { score, settings, warnings } = this.buildScore({
-      meta: input.meta,
-      revisions
-    });
+    const { score, settings, warnings } = this.buildScore(
+      this.filterByTrackPartId(input, options.trackPartId)
+    );
     score.finish(settings);
 
     const exporter = new alphaTab.exporter.AlphaTexExporter();
     const data = exporter.export(score, settings);
 
     return { data, warnings };
+  }
+
+  private filterByTrackPartId(
+    input: SongsterrToGpInput,
+    trackPartId?: number
+  ): SongsterrToGpInput {
+    if (typeof trackPartId !== 'number') return input;
+
+    return {
+      meta: input.meta,
+      revisions: input.revisions.filter(
+        (entry) => entry.trackMeta.partId === trackPartId
+      )
+    };
   }
 
   toMidi(

@@ -40,12 +40,16 @@ export class SongsterrService {
    * output: "bubble-dream-tab-book-version-231"
    */
   private normalizeSongName(input: string) {
-    if (/[^a-zA-Z0-9\s]/.test(input)) {
+    // Strip characters that break chrome.downloads.download's filename
+    // (e.g. "/" is treated as a path separator), regardless of the branch below.
+    const sanitized = input.replace(/[/\\:*?"<>|]/g, ' ').trim();
+
+    if (/[^a-zA-Z0-9\s]/.test(sanitized)) {
       // If non-English characters are found, return the input string as is
-      return input;
+      return sanitized;
     }
 
-    let normalized = input.toLowerCase();
+    let normalized = sanitized.toLowerCase();
     normalized = normalized.replace(/[^a-z0-9\s]/g, ' ');
     normalized = normalized.replace(/\s+/g, ' ');
     normalized = normalized.trim();
