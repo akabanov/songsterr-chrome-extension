@@ -12,7 +12,7 @@ This extension is meant for folks who can't YET afford one, not as a permanent s
 
 This can't be published on the Chrome Web Store for obvious reasons, so it needs to be installed manually as an "unpacked" extension.
 
-## Installing (no build tools required)
+## Installing
 
 1. Download the **[Latest release](../../releases/latest/download/songsterr-chrome-extension.zip)** (see [releases page](../../releases) for all releases)
 2. Unzip the downloaded file into a new directory
