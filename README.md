@@ -20,8 +20,9 @@ This extension is meant for folks who can't yet afford one, or need their tabs i
 5. Click **Load unpacked** and select the unzipped directory
 6. Pin the extension and open a Songsterr tab to try it out
 
-**Note:** Chrome doesn't make copy the unzipped directory.
-So unzip the extension some place safe where you won't delete it by accident.
+**Note:**
+Chrome doesn't make an internal copy, it loads the original directory every time.
+So, unzip the extension some place safe where you won't delete it by accident.
 
 ## Building from source
 
